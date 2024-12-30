@@ -5,7 +5,6 @@ import java.util.*;
 
 public class ScannerLexer {
 
-    // Reserved words and tokens
     private static final Set<String> RESERVED_WORDS = new HashSet<>(Arrays.asList(
             "#include", "const", "var", "function", "newb", "endb", "if", "else",
             "while", "repeat", "until", "call", "cin", "cout", "exit"
@@ -254,7 +253,6 @@ public class ScannerLexer {
         }
 
         private void maybeConsumeSemicolon() throws SyntaxError {
-            // If the next token is a semicolon and not the start of 'else', 'endb', etc., consume it.
             if (match("Punctuation", ";")) {
                 advance(); // consume semicolon
                 System.out.println("Consumed semicolon after statement.");
@@ -305,7 +303,7 @@ public class ScannerLexer {
         private void assignment() throws SyntaxError {
             Token varName = consume("Identifier", null, "Expected variable name for assignment.");
             consume("Operator", ":=", "Expected ':=' in assignment.");
-            Token value = expression(); // parse right-hand side expression
+            Token value = expression();
             System.out.println("Assignment: " + varName.value + " := " + value.value);
         }
 
@@ -342,7 +340,7 @@ public class ScannerLexer {
             statement();
 
             if (match("ReservedWord", "else")) {
-                advance(); // consume 'else'
+                advance();
                 statement();
             }
             System.out.println("Finished if statement.");
@@ -394,7 +392,6 @@ public class ScannerLexer {
             while (match("Operator", "+", "-", "*", "/", "mod", "div")) {
                 Token operator = advance();
                 Token right = term();
-                // Create a new pseudo "Expression" token that merges them
                 left = new Token("Expression",
                         "(" + left.value + " " + operator.value + " " + right.value + ")",
                         left.line);
@@ -468,7 +465,6 @@ public class ScannerLexer {
             if (!isAtEnd()) {
                 return tokens.get(current++);
             }
-            // If we’re at the end, return a synthetic EOF token
             return new Token("EOF", "", current);
         }
 

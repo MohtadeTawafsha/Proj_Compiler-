@@ -15,7 +15,6 @@ public class main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Create UI components
         Button chooseFileButton = new Button("Choose File");
         TextArea errorTextArea = new TextArea();
         errorTextArea.setEditable(false);
@@ -23,7 +22,6 @@ public class main extends Application {
 
         VBox root = new VBox(10, chooseFileButton, errorTextArea);
 
-        // Set up the FileChooser
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select a File to Parse");
         fileChooser.getExtensionFilters().addAll(
@@ -31,9 +29,7 @@ public class main extends Application {
                 new FileChooser.ExtensionFilter("All Files", "*.*")
         );
 
-        // Set action for the button
         chooseFileButton.setOnAction(event -> {
-            // Clear the TextArea
             errorTextArea.clear();
 
             File selectedFile = fileChooser.showOpenDialog(primaryStage);
@@ -41,7 +37,6 @@ public class main extends Application {
             if (selectedFile != null) {
                 System.out.println("Selected file: " + selectedFile.getAbsolutePath());
 
-                // Process the file using the Scanner and Parser
                 try {
                     List<ScannerLexer.Token> tokens = ScannerLexer.scanFile(selectedFile.getAbsolutePath());
                     ScannerLexer.Parser parser = new ScannerLexer.Parser(tokens);
@@ -69,7 +64,6 @@ public class main extends Application {
             }
         });
 
-        // Set up the stage
         Scene scene = new Scene(root, 600, 400);
         primaryStage.setTitle("File Parser");
         primaryStage.setScene(scene);
@@ -77,7 +71,6 @@ public class main extends Application {
     }
 
     public static void main(String[] args) {
-        // Launch the JavaFX application
         launch(args);
     }
 }
